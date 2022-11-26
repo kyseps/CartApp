@@ -1,34 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import ItemsList from "./Components/ItemsList";
+import Process from "./Components/Process";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [final, setFinal] = useState(innitialList);
+  function handleFinal(finalPrice) {
+    setFinal([...final, finalPrice]);
+    localStorage.setItem("items", JSON.stringify([...final, finalPrice]));
+  }
+
+  function innitialList() {
+    const initList = localStorage.getItem("items");
+    return initList ? JSON.parse(initList) : [];
+  }
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="App flex bg-slate-900 justify-center items-center p-8 gap-40">
+      <Process handleFinal={handleFinal} />
+      <ItemsList final={final} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
